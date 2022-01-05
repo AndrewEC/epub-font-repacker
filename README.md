@@ -11,6 +11,6 @@ modifications.
 
 ### Usage
 From the root of the project directory run the command
-> python -m repacker.repack <Absolute_Path_To_Epub>
+> python -m repack <Absolute_Path_To_Epub>
 
 replacing &lt;Path_To_Epub&gt; with the absolute path to the epub file.
