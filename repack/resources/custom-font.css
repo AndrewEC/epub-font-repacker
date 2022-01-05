@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "{{font_file}}";
+    font-weight: normal;
+    font-style: normal;
+    src: url("{{font_file}}");
+}
+
+* {
+    font-family: "{{font_file}}" !important
+}
