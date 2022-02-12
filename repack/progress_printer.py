@@ -43,8 +43,6 @@ class Printer:
         self._print_progress_message(message)
 
     def tick_end(self):
-        if self._current_progress == self._max_progress:
-            raise Exception('Call to tick_end was made but progress is already at 100%.')
         self._current_progress = self._current_progress + 1
         self._print_progress_message('')
 

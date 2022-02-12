@@ -1,5 +1,6 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
+from functools import lru_cache
 
 
 _OPF_FILE_EXTENSION = '.opf'
@@ -36,6 +37,7 @@ def _find_opf_location_in_container_content(container_content: str) -> str:
         raise Exception(f'Could not find opf location in container.xml', e)
 
 
+@lru_cache()
 def find_path_to_opf_file(temp_path: Path) -> Path:
     container_content = _read_in_contents_of_container_file(temp_path)
     opf_location = _find_opf_location_in_container_content(container_content)
