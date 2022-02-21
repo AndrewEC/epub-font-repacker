@@ -10,7 +10,7 @@ modifications.
 
 
 ### Usage
-From the root of the project directory run the command
+From the root of the project directory execute the powershell script `CreateVenv.ps1` the run the following command:
 > python -m repack <Absolute_Path_To_Epub>
 
 replacing &lt;Path_To_Epub&gt; with the absolute path to the epub file.
