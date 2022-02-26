@@ -3,7 +3,7 @@ from __future__ import annotations
 import math
 
 
-class _PrinterTick:
+class PrinterTick:
 
     def __init__(self, printer: Printer, message: str):
         self._printer = printer
@@ -36,8 +36,8 @@ class Printer:
         if exc_type is None and self._print_blank_on_exit:
             self.print_blank_line()
 
-    def progress_tick(self, message: str) -> _PrinterTick:
-        return _PrinterTick(self, message)
+    def progress_tick(self, message: str) -> PrinterTick:
+        return PrinterTick(self, message)
 
     def tick_start(self, message: str):
         self._print_progress_message(message)
