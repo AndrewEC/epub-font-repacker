@@ -4,7 +4,21 @@ from repack.paths import get_path_to_resource, generate_destination_file_name, g
 from repack.opf import add_manifest_entry_to_opf_file
 
 
-def process_resource(temp_path, resource_name: str, manifest_template: str) -> Path:
+def process_resource(temp_path: Path, resource_name: str, manifest_template: str) -> Path:
+    """
+    This function will look for a resource under the resources folder, generate a random uuid like name for the
+    file, copy it to the root of the temp_path, and insert the manifest_template at the tail end of the manifest
+    section of the OPF file located under the path specified by temp_path.
+
+    :param temp_path: The absolute path to the directory where the contents of the input epub file have been
+    extracted to.
+    :param resource_name: The name of the file under the resources folder we are processing and copying to the
+    temp_path.
+    :param manifest_template: An XML template to be updated and inserted in the manifest, OPF, file to create a
+    reference in the manifest to the new file this function will introduce to the temp_path.
+    :return: The path to the file written at the end of this function.
+    """
+
     resource_path = get_path_to_resource(resource_name)
     if not resource_path.is_file():
         raise Exception(f'The required resource could not be found at: [{resource_path}]')

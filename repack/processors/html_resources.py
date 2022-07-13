@@ -37,6 +37,15 @@ def _get_relative_link_to_css_file(temp_path: Path, file_path: Path, css_file_na
 
 
 def process_html_files(temp_path: Path, css_file_name: str):
+    """
+    Iterates through all of the xhtml and html files in the temp_path and adds a link tag at the end of the
+    <head> tag that points to the css file previously processed and copied to the root of the temp_path.
+
+    :param temp_path: The absolute path to the directory where the contents of the input epub file have been
+    extracted to.
+    :param css_file_name: The name of the css file processed by the css_resource.process_css_file function.
+    """
+
     files = _list_all_processable_files(temp_path)
     file_count = len(files)
     print(f'Processing [{file_count}] content files')

@@ -19,6 +19,10 @@ class PrinterTick:
 
 class Printer:
 
+    """
+    Assists in the process writing to the console/terminal a progress bar with an associated message.
+    """
+
     COMPLETE_TICK_CHAR = '█'
     INCOMPLETE_TICK_CHAR = '░'
     PROGRESS_TICKS = 30

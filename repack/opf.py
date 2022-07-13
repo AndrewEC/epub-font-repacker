@@ -39,6 +39,13 @@ def _find_opf_location_in_container_content(container_content: str) -> str:
 
 @lru_cache()
 def find_path_to_opf_file(temp_path: Path) -> Path:
+    """
+    Retrieve the absolute path to the OPF file that was extracted from the input epub file.
+
+    :param temp_path: The path to the temp folder in which the contents of the input epub file were extracted to.
+    :return: A Path object containing the absolute path to the OPF file.
+    :raises Exception: Raised if the OPF file cannot be found while traversing the contents of the temp_path.
+    """
     container_content = _read_in_contents_of_container_file(temp_path)
     opf_location = _find_opf_location_in_container_content(container_content)
     opf_path = temp_path.joinpath(opf_location)
@@ -48,8 +55,16 @@ def find_path_to_opf_file(temp_path: Path) -> Path:
 
 
 def add_manifest_entry_to_opf_file(temp_path: Path, opf_manifest_item: str):
+    """
+    Finds the location of the OPF file extracted from the input epub file and inserts the specified manifest entry at
+    the end of the manifest just before the closing </manifest> tag.
+
+    :param temp_path: The path to the temp folder in which the contents of the input epub file were extracted to.
+    :param opf_manifest_item: The fully formed XML manifest entry to add to the OPF file.
+    :raises Exception: Raised if the OPF file cannot be found while traversing the contents of the temp_path.
+    """
     opf_file_path = find_path_to_opf_file(temp_path)
-    print(f'Adding manifest item [{opf_manifest_item}] to opf file [{opf_file_path}]')
+    print(f'Adding manifest item [{opf_manifest_item.strip()}] to opf file [{opf_file_path}]')
     with open(opf_file_path, 'r') as file:
         current_lines = file.readlines()
     opf_file_path.unlink()
