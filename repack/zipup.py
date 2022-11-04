@@ -22,11 +22,14 @@ def _get_files_to_archive(temp_path: Path) -> List[Path]:
 
 
 def _get_sorted_list_of_files_to_archive(temp_path: Path) -> List[Path]:
+    """
+    The reason this method exists is to ensure that we adhere to the Epub 3 specification which stipulates the
+    mimetype file needs to be the first entry in the epub zip file.
+    """
     files_to_archive = _get_files_to_archive(temp_path)
-    # The epub 3 specification stipulates that the mimetype file should be the first entry in the zip file
-    # To adhere to this rule we first have to find the manifest file and move to the front of the list of the files to
-    # archive
-    index_of_mimetype_file = next((index_and_filename[0] for index_and_filename in enumerate(files_to_archive) if str(index_and_filename[1]).endswith(_MIMETYPE_FILE)))
+    index_of_mimetype_file = next((index for index, file_path in enumerate(files_to_archive) if file_path.name == _MIMETYPE_FILE), -1)
+    if index_of_mimetype_file == -1:
+        raise Exception('Could not repackage epub file because the mimetype file could not be found.')
     mime_type_file = files_to_archive.pop(index_of_mimetype_file)
     files_to_archive.insert(0, mime_type_file)
     return files_to_archive
@@ -38,8 +41,8 @@ def _determine_archive_name(temp_path: Path, file_path: Path) -> str:
 
 def create_epub_zip(epub_path: Path, temp_path: Path):
     """
-    This will zip up all the files located under the temp_path into a single epub file and place the epub file at
-    the location specified by the epub_path.
+    This will zip up all the files located under the temp_path into a single epub file and place the epub file in the
+    same folder as the epub file specified in epub_path.
 
     This will also ensure that the mimetype file is the first entry in the epub zip.
 
