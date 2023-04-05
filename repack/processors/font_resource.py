@@ -12,7 +12,7 @@ def process_font_file(temp_path: Path) -> str:
     Copies the font file from the resources folder to the root of the temp_path.
 
     :param temp_path: The absolute path to the directory where the contents of the input epub file have been
-    extracted to.
+        extracted to.
     :return: The absolute path to the font file copied to the
     """
 

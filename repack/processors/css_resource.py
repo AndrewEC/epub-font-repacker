@@ -25,7 +25,7 @@ def process_css_file(temp_path: Path, font_file_name: str) -> str:
     updated css file to the root of the temp_path.
 
     :param temp_path: The absolute path to the directory where the contents of the input epub file have been
-    extracted to.
+        extracted to.
     :param font_file_name: The name of the font file to be used throughout the epub file.
     """
 

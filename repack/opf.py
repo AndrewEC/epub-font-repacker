@@ -28,7 +28,7 @@ def _find_opf_location_in_container_content(container_content: str) -> str:
     try:
         root_file_list = BeautifulSoup(container_content, 'lxml').find('container').find('rootfiles').find_all('rootfile')
         location_node = next((root_file for root_file in root_file_list if root_file[_MEDIA_TYPE_PROPERTY] == _OPF_MEDIA_TYPE), None)
-        if location_node is None:
+        if location_node is None or 'full-path' not in location_node:
             raise ParseException('Could not find location of OPF file in container.xml')
         return location_node['full-path']
     except Exception as e:

@@ -23,9 +23,9 @@ class Printer:
     Assists in the process writing to the console/terminal a progress bar with an associated message.
     """
 
-    COMPLETE_TICK_CHAR = '█'
-    INCOMPLETE_TICK_CHAR = '░'
-    PROGRESS_TICKS = 30
+    _COMPLETE_TICK_CHAR = '█'
+    _INCOMPLETE_TICK_CHAR = '░'
+    _PROGRESS_TICKS = 30
 
     def __init__(self, max_progress: int, print_blank_on_exit=True):
         self._current_progress = 0
@@ -69,10 +69,10 @@ class Printer:
 
     def _create_progress_bar(self):
         progress = self._current_progress / self._max_progress
-        complete = math.floor(Printer.PROGRESS_TICKS * progress)
-        incomplete = Printer.PROGRESS_TICKS - complete
-        complete_ticks = Printer.COMPLETE_TICK_CHAR * complete
-        incomplete_ticks = Printer.INCOMPLETE_TICK_CHAR * incomplete
+        complete = math.floor(Printer._PROGRESS_TICKS * progress)
+        incomplete = Printer._PROGRESS_TICKS - complete
+        complete_ticks = Printer._COMPLETE_TICK_CHAR * complete
+        incomplete_ticks = Printer._INCOMPLETE_TICK_CHAR * incomplete
         progress = int(progress * 100)
         return f'[{complete_ticks}{incomplete_ticks}] {progress}%'
 

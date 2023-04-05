@@ -11,11 +11,11 @@ def process_resource(temp_path: Path, resource_name: str, manifest_template: str
     section of the OPF file located under the path specified by temp_path.
 
     :param temp_path: The absolute path to the directory where the contents of the input epub file have been
-    extracted to.
+        extracted to.
     :param resource_name: The name of the file under the resources folder we are processing and copying to the
-    temp_path.
+        temp_path.
     :param manifest_template: An XML template to be updated and inserted in the manifest, OPF, file to create a
-    reference in the manifest to the new file this function will introduce to the temp_path.
+        reference in the manifest to the new file this function will introduce to the temp_path.
     :return: The path to the file written at the end of this function.
     """
 

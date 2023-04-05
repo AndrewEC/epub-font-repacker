@@ -1,6 +1,5 @@
 from typing import Generator, List
 from pathlib import Path
-import os
 
 from repack.paths import get_relative_joining_path
 from repack.progress_printer import Printer
@@ -22,8 +21,7 @@ def _is_processable_file(file_path: Path) -> bool:
 
 def _list_all_processable_files(temp_path: Path) -> List[Path]:
     def yield_processable_files(path: Path) -> Generator[Path, None, None]:
-        for file in os.listdir(path):
-            file_path = path.joinpath(file)
+        for file_path in path.iterdir():
             if _is_processable_file(file_path):
                 yield file_path
             elif file_path.is_dir():
@@ -42,7 +40,7 @@ def process_html_files(temp_path: Path, css_file_name: str):
     <head> tag that points to the css file previously processed and copied to the root of the temp_path.
 
     :param temp_path: The absolute path to the directory where the contents of the input epub file have been
-    extracted to.
+        extracted to.
     :param css_file_name: The name of the css file processed by the css_resource.process_css_file function.
     """
 

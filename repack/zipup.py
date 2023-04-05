@@ -26,6 +26,7 @@ def _get_sorted_list_of_files_to_archive(temp_path: Path) -> List[Path]:
     The reason this method exists is to ensure that we adhere to the Epub 3 specification which stipulates the
     mimetype file needs to be the first entry in the epub zip file.
     """
+
     files_to_archive = _get_files_to_archive(temp_path)
     index_of_mimetype_file = next((index for index, file_path in enumerate(files_to_archive) if file_path.name == _MIMETYPE_FILE), -1)
     if index_of_mimetype_file == -1:
