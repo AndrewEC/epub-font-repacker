@@ -2,7 +2,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from functools import lru_cache
 
-from repack.errors import OpfLocationException
+from repack.errors import OpfLocationException, ParseException
 
 
 _OPF_FILE_EXTENSION = '.opf'
@@ -10,12 +10,6 @@ _MANIFEST_END_TAG = '</manifest>'
 _CONTAINER_XML_LOCATION = 'META-INF/container.xml'
 _OPF_MEDIA_TYPE = 'application/oebps-package+xml'
 _MEDIA_TYPE_PROPERTY = 'media-type'
-
-
-class ParseException(Exception):
-
-    def __init__(self, message: str):
-        super().__init__(message)
 
 
 def _read_in_contents_of_container_file(temp_path: Path) -> str:
@@ -46,7 +40,7 @@ def find_path_to_opf_file(temp_path: Path) -> Path:
 
     :param temp_path: The path to the temp folder in which the contents of the input epub file were extracted to.
     :return: A Path object containing the absolute path to the OPF file.
-    :raises Exception: Raised if the OPF file cannot be found while traversing the contents of the temp_path.
+    :raises OpfLocationException: Raised if the OPF file cannot be found.
     """
     try:
         container_content = _read_in_contents_of_container_file(temp_path)
@@ -66,7 +60,7 @@ def add_manifest_entry_to_opf_file(temp_path: Path, opf_manifest_item: str):
 
     :param temp_path: The path to the temp folder in which the contents of the input epub file were extracted to.
     :param opf_manifest_item: The fully formed XML manifest entry to add to the OPF file.
-    :raises Exception: Raised if the OPF file cannot be found while traversing the contents of the temp_path.
+    :raises OpfLocationException: Raised if the OPF file cannot be found.
     """
     opf_file_path = find_path_to_opf_file(temp_path)
     print(f'Adding manifest item [{opf_manifest_item.strip()}] to opf file [{opf_file_path}]')

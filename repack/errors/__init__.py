@@ -1,1 +1,1 @@
-from .err import EpubNotFoundException, OpfLocationException, MissingMimetypeFileException
+from .err import EpubNotFoundException, OpfLocationException, MissingMimetypeFileException, ParseException

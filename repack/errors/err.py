@@ -19,3 +19,9 @@ class MissingMimetypeFileException(Exception):
 
     def __init__(self):
         super().__init__('Could not repackage epub file because the mimetype file could not be found.')
+
+
+class ParseException(Exception):
+
+    def __init__(self, message: str):
+        super().__init__(message)
