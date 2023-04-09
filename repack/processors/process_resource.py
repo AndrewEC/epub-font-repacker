@@ -21,7 +21,7 @@ def process_resource(temp_path: Path, resource_name: str, manifest_template: str
 
     resource_path = get_path_to_resource(resource_name)
     if not resource_path.is_file():
-        raise Exception(f'The required resource could not be found at: [{resource_path}]')
+        raise ValueError(f'The required resource could not be found at: [{resource_path}]')
 
     destination_file_name = generate_destination_file_name(resource_path)
     destination_file_path = temp_path.joinpath(destination_file_name)

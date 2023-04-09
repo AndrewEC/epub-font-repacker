@@ -56,7 +56,7 @@ def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
     parent_folder_count = 0
     while temp_path.name != next_path.name:
         if next_path == next_path.parent:
-            raise Exception(f'There is no common parent directory between: [{temp_path}] and [{child_path}]')
+            raise ValueError(f'There is no common parent directory between: [{temp_path}] and [{child_path}]')
         next_path = next_path.parent
         parent_folder_count = parent_folder_count + 1
     return '../' * parent_folder_count

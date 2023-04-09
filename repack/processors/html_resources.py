@@ -46,7 +46,7 @@ def process_html_files(temp_path: Path, css_file_name: str):
 
     files = _list_all_processable_files(temp_path)
     file_count = len(files)
-    print(f'Processing [{file_count}] content files')
+    print(f'Adding font style links to [{file_count}] content files')
     with Printer(file_count) as printer:
         for file_path in files:
             with printer.progress_tick(f'Processing: [{file_path.stem}]'):

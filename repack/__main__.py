@@ -2,9 +2,9 @@ import click
 from pathlib import Path
 import shutil
 from zipfile import ZipFile
-import traceback
 
 import repack.processors as resource_processors
+from repack.errors import EpubNotFoundException
 from .zipup import create_epub_zip
 
 
@@ -21,7 +21,7 @@ def _unzip_epub_contents_to_temp_dir(epub_path: Path, temp_path: Path):
 
 def _process_epub_file(epub_path: Path, temp_path: Path):
     if not epub_path.is_file():
-        return print(f'The specified epub file could not be found or is not a file: [{epub_path}]')
+        raise EpubNotFoundException(epub_path)
 
     print(f'Processing epub file: [{epub_path}]')
 
@@ -48,12 +48,12 @@ def main(epub_file: str):
         _process_epub_file(epub_path, temp_path)
     except Exception as e:
         print(str(e))
-        print(traceback.print_tb(e.__traceback__))
     finally:
         try:
             shutil.rmtree(temp_path)
         except:
-            pass
+            print(f'Could not delete temp path at: [{temp_path}]')
+            print('It is safe to manually delete the temp path.')
 
 
 if __name__ == '__main__':

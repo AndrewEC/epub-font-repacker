@@ -4,6 +4,7 @@ from pathlib import Path
 from zipfile import ZipFile, ZIP_STORED
 
 from repack.progress_printer import Printer
+from repack.errors import MissingMimetypeFileException
 
 
 _MIMETYPE_FILE = 'mimetype'
@@ -30,7 +31,7 @@ def _get_sorted_list_of_files_to_archive(temp_path: Path) -> List[Path]:
     files_to_archive = _get_files_to_archive(temp_path)
     index_of_mimetype_file = next((index for index, file_path in enumerate(files_to_archive) if file_path.name == _MIMETYPE_FILE), -1)
     if index_of_mimetype_file == -1:
-        raise Exception('Could not repackage epub file because the mimetype file could not be found.')
+        raise MissingMimetypeFileException()
     mime_type_file = files_to_archive.pop(index_of_mimetype_file)
     files_to_archive.insert(0, mime_type_file)
     return files_to_archive
