@@ -55,6 +55,8 @@ def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
         return ''
     parent_folder_count = 0
     while temp_path.name != next_path.name:
+        # If the next_path and the next_path parent is the same means the next_path has no parent meaning we have
+        # reached the root of the drive.
         if next_path == next_path.parent:
             raise ValueError(f'There is no common parent directory between: [{temp_path}] and [{child_path}]')
         next_path = next_path.parent
@@ -64,7 +66,7 @@ def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
 
 def get_relative_joining_path_to_manifest(temp_path: Path) -> str:
     """
-    Attempts to determine the relative joining path between the temp_path the manifest, OPF, file.
+    Attempts to determine the relative joining path between the temp_path and the manifest file (OPF file).
 
     See get_relative_joining_path for details on how the relative joining path is determined.
 

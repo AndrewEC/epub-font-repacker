@@ -28,9 +28,7 @@ def _process_epub_file(epub_path: Path, temp_path: Path):
     _unzip_epub_contents_to_temp_dir(epub_path, temp_path)
 
     font_file_name = resource_processors.process_font_file(temp_path)
-
     css_file_name = resource_processors.process_css_file(temp_path, font_file_name)
-
     resource_processors.process_html_files(temp_path, css_file_name)
 
     create_epub_zip(epub_path, temp_path)

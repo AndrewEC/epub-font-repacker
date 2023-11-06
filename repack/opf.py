@@ -15,7 +15,7 @@ _MEDIA_TYPE_PROPERTY = 'media-type'
 def _read_in_contents_of_container_file(temp_path: Path) -> str:
     container_path = temp_path.joinpath(_CONTAINER_XML_LOCATION)
     if not container_path.is_file():
-        raise Exception(f'Could not find container.xml file at expected location: [{container_path}]')
+        raise ParseException(f'Could not find container.xml file at expected location: [{container_path}]')
     with open(container_path, 'r', encoding='utf-8') as container_file:
         return ''.join(container_file.readlines())
 
@@ -30,7 +30,7 @@ def _find_opf_location_in_container_content(container_content: str) -> str:
     except Exception as e:
         if isinstance(e, ParseException):
             raise
-        raise Exception(f'Could not find opf location in container.xml', e)
+        raise ParseException(f'Could not find opf location in container.xml', e)
 
 
 @lru_cache()
