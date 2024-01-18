@@ -1,39 +1,6 @@
 from pathlib import Path
-import uuid
 
 from repack.opf import find_path_to_opf_file
-
-
-_RESOURCE_FOLDER = 'resources'
-_DESTINATION_RESOURCE_NAME_TEMPLATE = 'resource{}{}'
-
-
-def get_path_to_resource(resource_name: str) -> Path:
-    """
-    Retrieves the absolute path to a file located within the resources folder located in the same directory as
-    this source file.
-
-    This does not perform any check to ensure the file in question exists.
-
-    :param resource_name: The name of the file within the resources folder that we need the absolute path of.
-    :return: The absolute path to the resources in the resources folder.
-    """
-    return Path(__file__).absolute().parent.joinpath(_RESOURCE_FOLDER).joinpath(resource_name)
-
-
-def generate_destination_file_name(source_file: Path) -> str:
-    """
-    Generates a random filename to act as a destination file name. The name will effectively be a randomly generated
-    uuid, with the hyphens (-) removed, with the suffix, extension, pulled from the source_file appended onto it.
-
-    :param source_file: The original name of the file from which the suffix of the file will be pulled as used as the
-        suffix in the resulting generated name.
-    :return: The name of the destination file. This filename will have the suffix, extension, that the input
-        source_file has.
-    """
-    formatted_uuid = str(uuid.uuid4()).replace('-', '')
-    return _DESTINATION_RESOURCE_NAME_TEMPLATE.format(formatted_uuid, source_file.suffix)
-
 
 def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
     """
@@ -55,8 +22,8 @@ def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
         return ''
     parent_folder_count = 0
     while temp_path.name != next_path.name:
-        # If the next_path and the next_path parent is the same means the next_path has no parent meaning we have
-        # reached the root of the drive.
+        # If next_path and the next_path parent are equal then next_path has no parent meaning we have
+        # reached the root of the drive and there is no common ancestry between the two paths.
         if next_path == next_path.parent:
             raise ValueError(f'There is no common parent directory between: [{temp_path}] and [{child_path}]')
         next_path = next_path.parent

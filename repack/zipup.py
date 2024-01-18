@@ -26,6 +26,9 @@ def _get_sorted_list_of_files_to_archive(temp_path: Path) -> List[Path]:
     """
     The reason this method exists is to ensure that we adhere to the Epub 3 specification which stipulates the
     mimetype file needs to be the first entry in the epub zip file.
+
+    This will essentially get a list of all files to archive, look for the mimetype file, and move said file to
+    be the first element in the list of files this function will return.
     """
 
     files_to_archive = _get_files_to_archive(temp_path)
@@ -37,7 +40,7 @@ def _get_sorted_list_of_files_to_archive(temp_path: Path) -> List[Path]:
     return files_to_archive
 
 
-def _determine_archive_name(temp_path: Path, file_path: Path) -> str:
+def _get_archive_file_name(temp_path: Path, file_path: Path) -> str:
     return str(file_path).replace(str(temp_path), '')
 
 
@@ -61,6 +64,6 @@ def create_epub_zip(epub_path: Path, temp_path: Path):
         with ZipFile(repacked_path, 'w', ZIP_STORED) as zippy:
             for file in files_to_archive:
                 with printer.progress_tick(f'Zipping: [{file.stem}]'):
-                    zippy.write(file, _determine_archive_name(temp_path, file))
+                    zippy.write(file, _get_archive_file_name(temp_path, file))
 
-    print(f'Repacked epub generated to: [{repacked_path}]')
+    print(f'Repacked epub can be found at: [{repacked_path}]')

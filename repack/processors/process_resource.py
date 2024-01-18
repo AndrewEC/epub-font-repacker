@@ -1,10 +1,12 @@
 from pathlib import Path
 import shutil
+
 from repack.paths import get_path_to_resource, generate_destination_file_name, get_relative_joining_path_to_manifest
 from repack.opf import add_manifest_entry_to_opf_file
+from repack.errors import MissingResourceException
 
 
-def process_resource(temp_path: Path, resource_name: str, manifest_template: str) -> Path:
+def register_resource(temp_path: Path, resource_name: str, manifest_template: str) -> Path:
     """
     This function will look for a resource under the resources folder, generate a random uuid like name for the
     file, copy it to the root of the temp_path, and insert the manifest_template at the tail end of the manifest
@@ -21,7 +23,7 @@ def process_resource(temp_path: Path, resource_name: str, manifest_template: str
 
     resource_path = get_path_to_resource(resource_name)
     if not resource_path.is_file():
-        raise ValueError(f'The required resource could not be found at: [{resource_path}]')
+        raise MissingResourceException(resource_path)
 
     destination_file_name = generate_destination_file_name(resource_path)
     destination_file_path = temp_path.joinpath(destination_file_name)

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .process_resource import process_resource
+from .process_resource import register_resource
 
 
 _CSS_FILE_NAME = 'custom-font.css'
@@ -21,7 +21,7 @@ def process_css_file(temp_path: Path, font_file_name: str) -> str:
     """
     Processes the css file located under the resources directory.
 
-    This will take the css file, replace the font_file placeholder with the value of font_file_name, and write the
+    This will take the css file, replace the {{font_file}} placeholder with the value of font_file_name, and write the
     updated css file to the root of the temp_path.
 
     :param temp_path: The absolute path to the directory where the contents of the input epub file have been
@@ -31,7 +31,7 @@ def process_css_file(temp_path: Path, font_file_name: str) -> str:
 
     print('Copying css file to temp directory')
 
-    destination_css_file_path = process_resource(temp_path, _CSS_FILE_NAME, _CSS_MANIFEST_ENTRY_TEMPLATE)
+    destination_css_file_path = register_resource(temp_path, _CSS_FILE_NAME, _CSS_MANIFEST_ENTRY_TEMPLATE)
 
     _replace_placeholder_with_path_to_font_file(font_file_name, destination_css_file_path)
 
