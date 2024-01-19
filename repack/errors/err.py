@@ -44,7 +44,7 @@ class MissingContainerFileException(_InvalidEpubException):
         super().__init__(MissingContainerFileException._MESSAGE_TEMPLATE.format(expected_location))
 
 
-class ParseException(Exception):
+class ParseException(_InvalidEpubException):
 
     _MESSAGE_TEMPLATE = 'The container.xml file could not be parsed as xml. Cause: [{}]'
 

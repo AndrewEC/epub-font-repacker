@@ -15,7 +15,8 @@ def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
         traversed before we reach the temp_path
     :return: A string representing the number of parent directories that need to be traversed to get from the
         child_path to the temp_path.
-    :raises Exception: Raised if the temp path is not a direct or related parent of the child_path.
+    :raises ValueError: Raised if there is no common ancestry between the temp_path and the child_path. This
+        shouldn't reasonably occur unless the temp_path and child_path are on two separate drives.
     """
     next_path = child_path if child_path.is_dir() else child_path.parent
     if temp_path.name == next_path.name:

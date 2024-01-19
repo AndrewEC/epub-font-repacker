@@ -20,7 +20,7 @@ def _read_container_file(temp_path: Path) -> str:
     with open(container_path, 'r', encoding='utf-8') as container_file:
         return ''.join(container_file.readlines())
 
-def _find_opf_file_location(container_content: str) -> str:
+def _find_relative_opf_file_location(container_content: str) -> str:
     try:
         root_file_list = BeautifulSoup(container_content, 'lxml').find('container').find('rootfiles').find_all('rootfile')
         opf_location_node = next((root_file for root_file in root_file_list if root_file[_MEDIA_TYPE_PROPERTY] == _OPF_MEDIA_TYPE), None)
@@ -44,8 +44,8 @@ def find_path_to_opf_file(temp_path: Path) -> Path:
     """
     try:
         container_content = _read_container_file(temp_path)
-        opf_location = _find_opf_file_location(container_content)
-        opf_path = temp_path.joinpath(opf_location).absolute()
+        relative_opf_location = _find_relative_opf_file_location(container_content)
+        opf_path = temp_path.joinpath(relative_opf_location).absolute()
         if not opf_path.is_file():
             raise MissingOpfException(opf_path)
         return opf_path
@@ -59,7 +59,7 @@ def add_manifest_entry_to_opf_file(temp_path: Path, opf_manifest_item: str):
     the end of the manifest just before the closing </manifest> tag.
 
     :param temp_path: The path to the temp folder in which the contents of the input epub file were extracted to.
-    :param opf_manifest_item: The fully formed XML manifest entry to add to the OPF file.
+    :param opf_manifest_item: The fully formed XML manifest entry node to add to the OPF file.
     :raises OpfLocationException: Raised if the OPF file cannot be found.
     """
     opf_file_path = find_path_to_opf_file(temp_path)
