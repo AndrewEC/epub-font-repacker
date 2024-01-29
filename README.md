@@ -1,7 +1,7 @@
 # Epub Font Repacker
 A utility to change the primary font used in an epub file.
 
-In order to repackage the epub file with the appropriate font this go through the following steps:
+To create the repackaged epub file this tool will perform the following steps:
 1. Extract the contents of an epub file to a temp directory
 2. Copy the CSS file and Font file to the temp directory
 3. Add the CSS file and Font file to the epub manifest
