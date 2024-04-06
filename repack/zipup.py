@@ -1,5 +1,5 @@
 import os
-from typing import Generator, List
+from typing import List
 from pathlib import Path
 from zipfile import ZipFile, ZIP_STORED
 
@@ -12,14 +12,11 @@ _REPACKED_EPUB_NAME_TEMPLATE = '{} - Repacked.epub'
 
 
 def _get_files_to_archive(temp_path: Path) -> List[Path]:
-    def yield_all_files_in_path(path_to_traverse: Path) -> Generator[Path, None, None]:
-        for file in os.listdir(path_to_traverse):
-            file_path = path_to_traverse.joinpath(file)
-            if file_path.is_file():
-                yield file_path
-            else:
-                yield from yield_all_files_in_path(file_path)
-    return list(yield_all_files_in_path(temp_path))
+    all_files = []
+    for root, dirs, files in os.walk(temp_path):
+        for file_name in files:
+            all_files.append(Path(root).joinpath(file_name))
+    return all_files
 
 
 def _get_sorted_list_of_files_to_archive(temp_path: Path) -> List[Path]:

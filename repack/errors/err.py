@@ -30,6 +30,7 @@ class MissingOpfException(_InvalidEpubException):
     def __init__(self, expected_location: Path):
         super().__init__(MissingOpfException._MESSAGE_TEMPLATE.format(expected_location))
 
+
 class MissingMimetypeFileException(_InvalidEpubException):
 
     def __init__(self):
