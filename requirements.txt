@@ -1,3 +1,2 @@
-lxml==4.9.0
-beautifulsoup4==4.10.0
-Click==8.0.4
+beautifulsoup4==4.12.3
+Click==8.1.7
