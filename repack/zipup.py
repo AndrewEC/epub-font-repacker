@@ -63,4 +63,4 @@ def create_epub_zip(epub_path: Path, temp_path: Path):
                 with printer.progress_tick(f'Zipping: [{file.stem}]'):
                     zippy.write(file, _get_archive_file_name(temp_path, file))
 
-    print(f'Repacked epub can be found at: [{repacked_path}]')
+    print(f'\nRepacked epub can be found at: [{repacked_path}]')

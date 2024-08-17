@@ -1,5 +1,6 @@
-from typing import Generator, List
+from typing import List
 from pathlib import Path
+import os
 
 from repack.paths import get_relative_joining_path
 from repack.progress_printer import Printer
@@ -20,13 +21,13 @@ def _is_processable_file(file_path: Path) -> bool:
 
 
 def _list_all_processable_files(temp_path: Path) -> List[Path]:
-    def yield_processable_files(path: Path) -> Generator[Path, None, None]:
-        for file_path in path.iterdir():
+    processable_files = []
+    for root, dirs, files in os.walk(temp_path):
+        for file in files:
+            file_path = Path(root).joinpath(file)
             if _is_processable_file(file_path):
-                yield file_path
-            elif file_path.is_dir():
-                yield from _list_all_processable_files(file_path)
-    return list(yield_processable_files(temp_path))
+                processable_files.append(file_path)
+    return processable_files
 
 
 def _get_relative_link_to_css_file(temp_path: Path, file_path: Path, css_file_name: str) -> str:

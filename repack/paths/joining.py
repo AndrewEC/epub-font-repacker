@@ -19,10 +19,10 @@ def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
         shouldn't reasonably occur unless the temp_path and child_path are on two separate drives.
     """
     next_path = child_path if child_path.is_dir() else child_path.parent
-    if temp_path.name == next_path.name:
+    if temp_path == next_path:
         return ''
     parent_folder_count = 0
-    while temp_path.name != next_path.name:
+    while temp_path != next_path:
         # If next_path and the next_path parent are equal then next_path has no parent meaning we have
         # reached the root of the drive and there is no common ancestry between the two paths.
         if next_path == next_path.parent:

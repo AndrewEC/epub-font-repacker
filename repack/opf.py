@@ -22,7 +22,7 @@ def _read_container_file(temp_path: Path) -> str:
 
 def _find_relative_opf_file_location(container_content: str) -> str:
     try:
-        root_file_list = BeautifulSoup(container_content, 'lxml').find('container').find('rootfiles').find_all('rootfile')
+        root_file_list = BeautifulSoup(container_content, features='xml').find('container').find('rootfiles').find_all('rootfile')
         opf_location_node = next((root_file for root_file in root_file_list if root_file[_MEDIA_TYPE_PROPERTY] == _OPF_MEDIA_TYPE), None)
         return opf_location_node[_FULL_PATH_PROPERTY]
     except Exception as e:
