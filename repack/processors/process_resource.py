@@ -29,6 +29,8 @@ def register_resource(temp_path: Path, resource_name: str, manifest_template: st
     destination_file_path = temp_path.joinpath(destination_file_name)
     relative_link_location = f'{get_relative_joining_path_to_manifest(temp_path)}{destination_file_name}'
 
+    print(f'Registering resource [{resource_name}] if manifest with name [{destination_file_name}]')
+
     opf_manifest_entry = manifest_template.format(relative_link_location, destination_file_path.stem)
     add_manifest_entry_to_opf_file(temp_path, opf_manifest_entry)
 

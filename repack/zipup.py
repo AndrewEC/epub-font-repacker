@@ -56,7 +56,7 @@ def create_epub_zip(epub_path: Path, temp_path: Path):
 
     files_to_archive = _get_sorted_list_of_files_to_archive(temp_path)
 
-    print(f'Zipping [{len(files_to_archive)}] files into repacked epub')
+    print(f'Zipping [{len(files_to_archive)}] files into repacked epub.')
     with Printer(len(files_to_archive)) as printer:
         with ZipFile(repacked_path, 'w', ZIP_STORED) as zippy:
             for file in files_to_archive:

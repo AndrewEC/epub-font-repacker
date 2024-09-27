@@ -29,7 +29,7 @@ def process_css_file(temp_path: Path, font_file_name: str) -> str:
     :param font_file_name: The name of the font file to be used throughout the epub file.
     """
 
-    print('Copying css file to temp directory')
+    print('Adding CSS file.')
 
     destination_css_file_path = register_resource(temp_path, _CSS_FILE_NAME, _CSS_MANIFEST_ENTRY_TEMPLATE)
 

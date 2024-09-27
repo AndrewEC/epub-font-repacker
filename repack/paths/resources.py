@@ -41,5 +41,5 @@ def generate_destination_file_name(source_file: Path) -> str:
     :return: The name of the destination file. This filename will have the suffix, extension, that the input
         source_file has.
     """
-    formatted_uuid = str(uuid.uuid4()).replace('-', '')
+    formatted_uuid = str(uuid.uuid4()).replace('-', '')[:8]
     return _DESTINATION_RESOURCE_NAME_TEMPLATE.format(formatted_uuid, source_file.suffix)

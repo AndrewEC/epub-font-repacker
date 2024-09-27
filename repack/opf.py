@@ -63,7 +63,6 @@ def add_manifest_entry_to_opf_file(temp_path: Path, opf_manifest_item: str):
     :raises OpfLocationException: Raised if the OPF file cannot be found.
     """
     opf_file_path = find_path_to_opf_file(temp_path)
-    print(f'Adding manifest item [{opf_manifest_item.strip()}] to opf file [{opf_file_path}]')
     with open(opf_file_path, 'r') as file:
         current_lines = file.readlines()
     opf_file_path.unlink()

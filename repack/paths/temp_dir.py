@@ -28,4 +28,4 @@ class TempDirectory:
         except Exception as e:
             print('The temp directory could not be deleted. It is safe to delete the following directory:')
             print(f'\t{self._dir_path}')
-            print(f'The path could not be deleted because: [{e}]')
+            print(f'The directory could not be deleted because: [{e}]')
