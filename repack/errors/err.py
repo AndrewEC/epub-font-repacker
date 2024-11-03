@@ -55,7 +55,7 @@ class ParseException(_InvalidEpubException):
 
 class PathAlreadyExistsException(Exception):
 
-    _MESSAGE_TEMPLATE = 'The temp path could not be created because it already exists. Please delete the following path and try again: [{}}'
+    _MESSAGE_TEMPLATE = 'A path could not be created because it already exists. Please delete the following path and try again: [{}}'
 
     def __init__(self, temp_path: Path):
         super().__init__(PathAlreadyExistsException._MESSAGE_TEMPLATE.format(temp_path))

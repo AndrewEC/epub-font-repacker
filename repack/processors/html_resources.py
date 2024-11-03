@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 
 from repack.paths import get_relative_joining_path
-from repack.progress_printer import Printer
+from repack.util import read_and_unlink, ProgressPrinter
 
 
 _APPLICABLE_EXTENSIONS = [
@@ -22,7 +22,7 @@ def _is_processable_file(file_path: Path) -> bool:
 
 def _list_all_processable_files(temp_path: Path) -> List[Path]:
     processable_files = []
-    for root, dirs, files in os.walk(temp_path):
+    for root, _, files in os.walk(temp_path):
         for file in files:
             file_path = Path(root).joinpath(file)
             if _is_processable_file(file_path):
@@ -48,15 +48,17 @@ def process_html_files(temp_path: Path, css_file_name: str):
     files = _list_all_processable_files(temp_path)
     file_count = len(files)
     print(f'Adding font style links to [{file_count}] content files.')
-    with Printer(file_count) as printer:
+    with ProgressPrinter(file_count) as printer:
         for file_path in files:
-            with printer.progress_tick(f'Adding font to file: [{file_path.stem}]'):
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    lines = file.readlines()
-                file_path.unlink()
-                with open(file_path, 'w', encoding='utf-8') as file:
-                    for line in lines:
-                        if _END_HEAD_TAG in line:
-                            relative_css_link = _get_relative_link_to_css_file(temp_path, file_path, css_file_name)
-                            file.write(_CSS_LINK_TEMPLATE.format(relative_css_link))
-                        file.write(line)
+            with printer.progress_tick(f'Adding font style to file: [{file_path.stem}]'):
+                lines = read_and_unlink(file_path)
+                _write_html_file_with_css_link(file_path, lines, temp_path, css_file_name)
+
+
+def _write_html_file_with_css_link(file_path: Path, lines: List[str], temp_path: Path, css_file_name: str):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for line in lines:
+            if _END_HEAD_TAG in line:
+                relative_css_link = _get_relative_link_to_css_file(temp_path, file_path, css_file_name)
+                file.write(_CSS_LINK_TEMPLATE.format(relative_css_link))
+            file.write(line)

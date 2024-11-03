@@ -5,7 +5,7 @@ import math
 
 class PrinterTick:
 
-    def __init__(self, printer: Printer, message: str):
+    def __init__(self, printer: ProgressPrinter, message: str):
         self._printer = printer
         self._message = message
 
@@ -17,7 +17,7 @@ class PrinterTick:
             self._printer.tick_end()
 
 
-class Printer:
+class ProgressPrinter:
 
     """
     Assists in the process writing to the console/terminal a progress bar with an associated message.
@@ -69,10 +69,10 @@ class Printer:
 
     def _create_progress_bar(self):
         progress = self._current_progress / self._max_progress
-        complete = math.floor(Printer._PROGRESS_TICKS * progress)
-        incomplete = Printer._PROGRESS_TICKS - complete
-        complete_ticks = Printer._COMPLETE_TICK_CHAR * complete
-        incomplete_ticks = Printer._INCOMPLETE_TICK_CHAR * incomplete
+        complete = math.floor(ProgressPrinter._PROGRESS_TICKS * progress)
+        incomplete = ProgressPrinter._PROGRESS_TICKS - complete
+        complete_ticks = ProgressPrinter._COMPLETE_TICK_CHAR * complete
+        incomplete_ticks = ProgressPrinter._INCOMPLETE_TICK_CHAR * incomplete
         progress = int(progress * 100)
         return f'[{complete_ticks}{incomplete_ticks}] {progress}%'
 

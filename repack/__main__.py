@@ -1,54 +1,54 @@
 import click
 from pathlib import Path
-from zipfile import ZipFile
 
 import repack.processors as resource_processors
-from repack.errors import EpubNotFoundException
+from repack.errors import EpubNotFoundException, PathAlreadyExistsException
 from repack.paths import TempDirectory, get_temp_path
-from .zipup import create_epub_zip
+from .zipup import create_epub_zip, get_repacked_path, unzip_epub_contents_to_temp_dir
 
 
 _TEMP_FOLDER_NAME_TEMPLATE = '_temp_{}'
 
 
-def _unzip_epub_contents_to_temp_dir(epub_path: Path, temp_path: Path):
-    print(f'Unzipping contents to temp folder: [{temp_path}]')
-    with ZipFile(epub_path, 'r') as zip_file:
-        zip_file.extractall(temp_path)
-
-
 def _process_epub_file(epub_file: str):
-    epub_path = Path(epub_file)
+    epub_path = Path(epub_file).absolute()
     if not epub_path.is_file():
         raise EpubNotFoundException(epub_path)
+
+    repacked_path = get_repacked_path(epub_path)
+    if repacked_path.is_file():
+        raise PathAlreadyExistsException(repacked_path)
 
     temp_path = get_temp_path(epub_path)
 
     with TempDirectory(temp_path):
         print(f'Processing epub file: [{epub_path}]')
 
-        _unzip_epub_contents_to_temp_dir(epub_path, temp_path)
-        print()
+        unzip_epub_contents_to_temp_dir(epub_path, temp_path)
 
         font_file_name = resource_processors.process_font_file(temp_path)
-        print()
         css_file_name = resource_processors.process_css_file(temp_path, font_file_name)
-        print()
         resource_processors.process_html_files(temp_path, css_file_name)
-        print()
 
         create_epub_zip(epub_path, temp_path)
-        print()
 
 
 @click.command()
 @click.argument('epub_file')
-def main(epub_file: str):
-    """epub_file: The absolute or relative path to the epub file to modify."""
+@click.option(
+    '--stack',
+    '-s',
+    is_flag=True,
+    help='If provided the full stack trace of an error will be printed.'
+)
+def main(epub_file: str, stack: bool):
+    """epub_file: The absolute or relative path to the epub file to repack."""
 
     try:
         _process_epub_file(epub_file)
     except Exception as e:
+        if stack:
+            raise
         print(str(e))
 
 

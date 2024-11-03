@@ -3,7 +3,7 @@ from typing import List
 from pathlib import Path
 from zipfile import ZipFile, ZIP_STORED
 
-from repack.progress_printer import Printer
+from repack.util import ProgressPrinter
 from repack.errors import MissingMimetypeFileException
 
 
@@ -41,6 +41,23 @@ def _get_archive_file_name(temp_path: Path, file_path: Path) -> str:
     return str(file_path).replace(str(temp_path), '')
 
 
+def get_repacked_path(epub_path: Path) -> Path:
+    """
+    Gets the full path where the repacked epub file will be written to.
+
+    :param epub_path: The path of the epub that is going to be repacked.
+    :return: The full path where the repacked epub file will be written to.
+    """
+    repacked_name = _REPACKED_EPUB_NAME_TEMPLATE.format(epub_path.stem)
+    return epub_path.parent.joinpath(repacked_name)
+
+
+def unzip_epub_contents_to_temp_dir(epub_path: Path, temp_path: Path):
+    print(f'Unzipping contents to temp folder: [{temp_path}]')
+    with ZipFile(epub_path, 'r') as zip_file:
+        zip_file.extractall(temp_path)
+
+
 def create_epub_zip(epub_path: Path, temp_path: Path):
     """
     This will zip up all the files located under the temp_path into a single epub file and place the epub file in the
@@ -51,13 +68,12 @@ def create_epub_zip(epub_path: Path, temp_path: Path):
     :param epub_path: The absolute path of the epub file that will be generated after this method has been executed.
     :param temp_path: The path to the files that will be added to the epub file.
     """
-    repacked_name = _REPACKED_EPUB_NAME_TEMPLATE.format(epub_path.stem)
-    repacked_path = epub_path.parent.joinpath(repacked_name)
+    repacked_path = get_repacked_path(epub_path)
 
     files_to_archive = _get_sorted_list_of_files_to_archive(temp_path)
 
     print(f'Zipping [{len(files_to_archive)}] files into repacked epub.')
-    with Printer(len(files_to_archive)) as printer:
+    with ProgressPrinter(len(files_to_archive)) as printer:
         with ZipFile(repacked_path, 'w', ZIP_STORED) as zippy:
             for file in files_to_archive:
                 with printer.progress_tick(f'Zipping: [{file.stem}]'):

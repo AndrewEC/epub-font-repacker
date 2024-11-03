@@ -2,7 +2,9 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from functools import lru_cache
 
-from repack.errors import OpfException, ParseException, MissingContainerFileException, MissingOpfException
+from repack.errors import (OpfException, ParseException,
+                           MissingContainerFileException, MissingOpfException)
+from repack.util import read_and_unlink
 
 
 _OPF_FILE_EXTENSION = '.opf'
@@ -26,7 +28,7 @@ def _find_relative_opf_file_location(container_content: str) -> str:
         opf_location_node = next((root_file for root_file in root_file_list if root_file[_MEDIA_TYPE_PROPERTY] == _OPF_MEDIA_TYPE), None)
         return opf_location_node[_FULL_PATH_PROPERTY]
     except Exception as e:
-        raise ParseException(e)
+        raise ParseException(e) from e
 
 
 @lru_cache()
@@ -50,7 +52,7 @@ def find_path_to_opf_file(temp_path: Path) -> Path:
             raise MissingOpfException(opf_path)
         return opf_path
     except Exception as e:
-        raise OpfException(e)
+        raise OpfException(e) from e
 
 
 def add_manifest_entry_to_opf_file(temp_path: Path, opf_manifest_item: str):
@@ -63,10 +65,8 @@ def add_manifest_entry_to_opf_file(temp_path: Path, opf_manifest_item: str):
     :raises OpfLocationException: Raised if the OPF file cannot be found.
     """
     opf_file_path = find_path_to_opf_file(temp_path)
-    with open(opf_file_path, 'r') as file:
-        current_lines = file.readlines()
-    opf_file_path.unlink()
-    with open(opf_file_path, 'w') as file:
+    current_lines = read_and_unlink(opf_file_path)
+    with open(opf_file_path, 'w', encoding='utf-8') as file:
         for line in current_lines:
             if _MANIFEST_END_TAG in line:
                 file.write(opf_manifest_item)

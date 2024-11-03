@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from repack.util import read_and_unlink
 from .process_resource import register_resource
 
 
@@ -9,11 +10,9 @@ _CSS_FONT_FILE_PLACEHOLDER = '{{font_file}}'
 
 
 def _replace_placeholder_with_path_to_font_file(font_file_name: str, css_file_path: Path):
-    with open(css_file_path, 'r') as file:
-        lines = file.readlines()
-    css_file_path.unlink()
+    lines = read_and_unlink(css_file_path)
     content = '\n'.join([line.replace(_CSS_FONT_FILE_PLACEHOLDER, font_file_name) for line in lines])
-    with open(css_file_path, 'w') as file:
+    with open(css_file_path, 'w', encoding='utf-8') as file:
         file.write(content)
 
 
