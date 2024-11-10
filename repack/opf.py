@@ -22,6 +22,7 @@ def _read_container_file(temp_path: Path) -> str:
     with open(container_path, 'r', encoding='utf-8') as container_file:
         return ''.join(container_file.readlines())
 
+
 def _find_relative_opf_file_location(container_content: str) -> str:
     try:
         root_file_list = BeautifulSoup(container_content, features='xml').find('container').find('rootfiles').find_all('rootfile')

@@ -2,6 +2,7 @@ from pathlib import Path
 
 from repack.opf import find_path_to_opf_file
 
+
 def get_relative_joining_path(temp_path: Path, child_path: Path) -> str:
     """
     Attempts to determine the number of parent directories that sit between the child_path and the temp_path.

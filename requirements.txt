@@ -1,3 +1,5 @@
 beautifulsoup4==4.12.3
-Click==8.1.7
+click==8.1.7
 lxml==5.3.0
+pip_audit==2.7.3
+flake8==7.1.1
