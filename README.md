@@ -3,7 +3,7 @@ A utility to change the primary font used in an epub file.
 
 ## Cloning
 To clone the project and the required submodules run:
-> git clone --recurse-submodules https://github.com/AndrewEC/har-server.git
+> git clone --recurse-submodules https://github.com/AndrewEC/epub-font-repacker.git
 
 ## Process
 To create the repackaged epub file this tool will perform the following steps:
@@ -20,4 +20,4 @@ to the file name.
 From the root of the project directory execute the powershell script `CreateVenv.ps1` then run the following command:
 > python -m repack <Path_To_Epub>
 
-replacing &lt;Path_To_Epub&gt; with the absolute path to the epub file.
+replacing <Path_To_Epub> with the absolute path to the epub file.
