@@ -15,10 +15,10 @@ class TempDirectory:
 
     def __init__(self, dir_path: Path):
         self._dir_path = dir_path
-        if self._dir_path.is_dir():
-            raise PathAlreadyExistsException(self._dir_path)
 
     def __enter__(self):
+        if self._dir_path.is_dir():
+            raise PathAlreadyExistsException(self._dir_path)
         self._dir_path.mkdir(exist_ok=False, parents=False)
 
     def __exit__(self, exc_type, exc_val, exc_tb):

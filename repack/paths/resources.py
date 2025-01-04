@@ -6,6 +6,8 @@ _RESOURCE_FOLDER = 'resources'
 _DESTINATION_RESOURCE_NAME_TEMPLATE = 'resource{}{}'
 _TEMP_FOLDER_NAME_TEMPLATE = '_temp_{}'
 
+_DESTINATION_NAME_LENGTH = 8
+
 
 def get_temp_path(epub_file: Path) -> Path:
     """
@@ -41,5 +43,5 @@ def generate_destination_file_name(source_file: Path) -> str:
     :return: The name of the destination file. This filename will have the suffix, extension, that the input
         source_file has.
     """
-    formatted_uuid = str(uuid.uuid4()).replace('-', '')[:8]
+    formatted_uuid = str(uuid.uuid4()).replace('-', '')[:_DESTINATION_NAME_LENGTH]
     return _DESTINATION_RESOURCE_NAME_TEMPLATE.format(formatted_uuid, source_file.suffix)
