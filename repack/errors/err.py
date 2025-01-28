@@ -25,7 +25,8 @@ class OpfException(Exception):
 
 class MissingOpfException(_InvalidEpubException):
 
-    _MESSAGE_TEMPLATE = 'The opf file specified in the container.xml definition could not be found at the specified location: [{}]'
+    _MESSAGE_TEMPLATE = ('The opf file specified in the container.xml definition could not '
+                         'be found at the specified location: [{}]')
 
     def __init__(self, expected_location: Path):
         super().__init__(MissingOpfException._MESSAGE_TEMPLATE.format(expected_location))
@@ -55,7 +56,8 @@ class ParseException(_InvalidEpubException):
 
 class PathAlreadyExistsException(Exception):
 
-    _MESSAGE_TEMPLATE = 'A path could not be created because it already exists. Please delete the following path and try again: [{}}'
+    _MESSAGE_TEMPLATE = ('A path could not be created because it already exists. '
+                         'Please delete the following path and try again: [{}]')
 
     def __init__(self, temp_path: Path):
         super().__init__(PathAlreadyExistsException._MESSAGE_TEMPLATE.format(temp_path))
@@ -63,8 +65,9 @@ class PathAlreadyExistsException(Exception):
 
 class MissingResourceException(Exception):
 
-    _MESSAGE_TEMPLATE = ('The resource could not be found at [{}]'
-                         '\nThis likely means the resource has been deleted/moved or was not successfully downloaded from Github.')
+    _MESSAGE_TEMPLATE = ('A required resource could not be found at [{}].'
+                         '\nThis could mean the resource has been deleted/moved or '
+                         'was not successfully downloaded from Github.')
 
     def __init__(self, resource: Path):
         super().__init__(MissingResourceException._MESSAGE_TEMPLATE.format(resource))
