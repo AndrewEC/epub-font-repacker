@@ -1,8 +1,11 @@
 from pathlib import Path
 import shutil
 
-from repack.paths import (get_path_to_resource, generate_destination_file_name,
-                          get_relative_joining_path_to_manifest)
+from repack.paths import (
+    get_path_to_resource,
+    generate_destination_file_name,
+    get_relative_joining_path_to_manifest
+)
 from repack.opf import add_manifest_entry_to_opf_file
 from repack.errors import MissingResourceException
 

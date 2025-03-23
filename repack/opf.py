@@ -2,8 +2,12 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from functools import lru_cache
 
-from repack.errors import (OpfException, ParseException,
-                           MissingContainerFileException, MissingOpfException)
+from repack.errors import (
+    OpfException,
+    ParseException,
+    MissingContainerFileException,
+    MissingOpfException
+)
 from repack.util import read_and_unlink
 
 
