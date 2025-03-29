@@ -17,7 +17,7 @@ This will not delete or overwrite the existing epub file. It will generate a new
 to the file name.
 
 ### Usage
-From the root of the project directory execute the powershell script `CreateVenv.ps1` then run the following command:
+From the root of the project directory execute the powershell script `RunScript.ps1 Install` then run the following command:
 > python -m repack <Path_To_Epub>
 
 replacing <Path_To_Epub> with the absolute path to the epub file.
