@@ -5,6 +5,12 @@ A utility to change the primary font used in an epub file.
 To clone the project and the required submodules run:
 > git clone --recurse-submodules https://github.com/AndrewEC/epub-font-repacker.git
 
+### Usage
+From the root of the project directory execute the powershell script `RunScript.ps1 Install` then run the following command:
+> python -m repack <Path_To_Epub>
+
+replacing <Path_To_Epub> with the absolute path to the epub file.
+
 ## Process
 To create the repackaged epub file this tool will perform the following steps:
 1. Extract the contents of an epub file to a temp directory
@@ -16,8 +22,7 @@ To create the repackaged epub file this tool will perform the following steps:
 This will not delete or overwrite the existing epub file. It will generate a new epub with `-repacked` appended
 to the file name.
 
-### Usage
-From the root of the project directory execute the powershell script `RunScript.ps1 Install` then run the following command:
-> python -m repack <Path_To_Epub>
-
-replacing <Path_To_Epub> with the absolute path to the epub file.
+## Quality Metrics
+Run the `Runscript.ps1 All` command to activate the virtual environment, install
+dependencies, run flake8, run unit tests with code coverage metrics, and audit the
+dependencies.

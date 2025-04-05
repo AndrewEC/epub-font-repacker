@@ -1,24 +1,24 @@
 from pathlib import Path
 import shutil
 
-from repack.errors import PathAlreadyExistsException
+from repack.core.errors import PathAlreadyExistsException
 
 
 class TempDirectory:
 
     """
     Enterable utility class to help create and delete a temp directory in which the contents of the epub
-    file being modified can be extracted to so its contents can be further processes.
+    file being modified can be extracted to so its contents can be further processed.
 
     This will throw an exception upon entry if the temp directory already exists.
     """
 
     def __init__(self, dir_path: Path):
         self._dir_path = dir_path
-
-    def __enter__(self):
         if self._dir_path.is_dir():
             raise PathAlreadyExistsException(self._dir_path)
+
+    def __enter__(self):
         self._dir_path.mkdir(exist_ok=False, parents=False)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -29,3 +29,17 @@ class TempDirectory:
             print('The temp directory could not be deleted. It is safe to delete the following directory:')
             print(f'\t{self._dir_path}')
             print(f'The directory could not be deleted because: [{e}]')
+
+
+class TempDirectoryFactory:
+
+    """
+    Creates instances of the TempDirectory. This mostly exists to make unit
+    testing the TempDirectory, and its consumers, as separate components easier.
+    """
+
+    def create(self, dir_path: Path) -> TempDirectory:
+        return TempDirectory(dir_path)
+
+
+TEMP_DIRECTORY_FACTORY_SINGLETON = TempDirectoryFactory()

@@ -1,0 +1,16 @@
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookID" version="2.0">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:title id="title">A Title</dc:title></metadata>
+  <manifest>
+    <item href="cover.xhtml" id="Cover" media-type="application/xhtml+xml"/>
+    <item href="chapter-001.xhtml" id="chapter-001-xhtml" media-type="application/xhtml+xml"/>
+</manifest>
+  <spine toc="ncx">
+    <itemref idref="Cover"/>
+    <itemref idref="chapter-001-xhtml"/>
+  </spine>
+  <guide>
+    <reference href="cover.xhtml" title="Cover" type="cover"/>
+    <reference href="chapter-001.xhtml" title="Beginning" type="text"/>
+</guide>
+</package>

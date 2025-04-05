@@ -1,0 +1,3 @@
+from .resource_paths_test import ResourcePathsTests
+from .temp_directory_factory_test import TempDirectoryFactoryTests
+from .joining_paths_test import JoiningPathsTests
