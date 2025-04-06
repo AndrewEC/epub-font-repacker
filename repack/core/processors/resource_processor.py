@@ -8,7 +8,8 @@ from repack.core.errors import MissingResourceException
 
 class ResourceProcessor:
 
-    def __init__(self, opf: Opf = OPF_SINGLETON,
+    def __init__(self,
+                 opf: Opf = OPF_SINGLETON,
                  resource_paths: ResourcePaths = RESOURCE_PATHS_SINGLETON,
                  joining_paths: JoiningPaths = JOINING_PATHS_SINGLETON):
 

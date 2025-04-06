@@ -20,7 +20,7 @@ _FULL_PATH_PROPERTY = 'full-path'
 
 class Opf:
 
-    @lru_cache()
+    @lru_cache() # noqa B019
     def find_path_to_opf_file(self, temp_path: Path) -> Path:
         """
         Retrieve the absolute path to the OPF file (sometimes referred to the manifest file).
