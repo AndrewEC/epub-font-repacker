@@ -2,7 +2,7 @@ param(
     [ValidateSet(
         "All",
         "Audit",
-        "Flake",
+        "Lint",
         "Install",
         "IntegrationTests",
         "Tests"
@@ -17,7 +17,7 @@ Invoke-ActivateScript
 switch ($ScriptAction) {
     "All" {
         Invoke-InstallScript
-        Invoke-FlakeScript
+        Invoke-RuffScript
         Invoke-TestScript 90 {
             coverage run `
                 --omit=./repack/tests/* `
@@ -31,7 +31,7 @@ switch ($ScriptAction) {
         Invoke-AuditScript
     }
     "Audit" { Invoke-AuditScript }
-    "Flake" { Invoke-FlakeScript }
+    "Lint" { Invoke-RuffScript }
     "Install" { Invoke-InstallScript }
     "IntegrationTests" {
         Invoke-OtherScript "Integration tests" @(0) {
