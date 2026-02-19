@@ -48,7 +48,7 @@ class MissingContainerFileException(_InvalidEpubException):
 
 class ParseException(_InvalidEpubException):
 
-    _MESSAGE_TEMPLATE = 'The container.xml file could not be parsed as xml. Cause: [{}]'
+    _MESSAGE_TEMPLATE = 'The OPF file location could not be parsed from the container.xml file. Cause: [{}]'
 
     def __init__(self, exception: Exception):
         super().__init__(ParseException._MESSAGE_TEMPLATE.format(exception))

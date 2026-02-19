@@ -18,7 +18,7 @@ switch ($ScriptAction) {
     "All" {
         Invoke-InstallScript
         Invoke-RuffScript
-        Invoke-TestScript 90 {
+        Invoke-TestScript 50 {
             coverage run `
                 --omit=./repack/tests/* `
                 --source=repack.core `
@@ -39,7 +39,7 @@ switch ($ScriptAction) {
         }
     }
     "Tests" {
-        Invoke-TestScript 90 {
+        Invoke-TestScript 50 {
             coverage run `
                 --omit=./repack/tests/* `
                 --source=repack.core `

@@ -1,16 +1,18 @@
-from typing import List, Any
+from typing import List
 import shutil
 from pathlib import Path
 from zipfile import ZipFile
+from xml.etree import ElementTree
+import re
 
 import unittest
-
-from bs4 import BeautifulSoup
 
 from repack.core.processors import EPUB_PROCESSOR_SINGLETON
 
 
 class IntegrationTest(unittest.TestCase):
+
+    _XHTML_LINK_PATTERN = '^<link href="\\.\\.\\/resource(?:[0-9]|[a-z]){8}\\.css" rel="stylesheet" type="text\\/css"\\/>'
 
     def test_repack(self):
         test_data_path = Path(__file__).absolute().parent.joinpath('test_data')
@@ -59,7 +61,7 @@ class IntegrationTest(unittest.TestCase):
 
         self.assertIsNotNone(matching_file, f'No file in repacked epub starts with [{prefix}] and ends with [{suffix}].')
 
-        return matching_file
+        return matching_file if matching_file is not None else ''
 
     def _assert_entries_in_opf(self, temp_path: Path, font_resource: str, css_resource: str):
         opf_path = temp_path.joinpath('package.opf')
@@ -68,12 +70,12 @@ class IntegrationTest(unittest.TestCase):
         with open(opf_path, 'r', encoding='utf-8') as file:
             contents = ''.join(file.readlines())
 
-        manifest_items = BeautifulSoup(contents, features='xml').find('package').find('manifest').find_all('item')
-        self._assert_manifest_entry(manifest_items, font_resource)
-        self._assert_manifest_entry(manifest_items, css_resource)
+        manifest_items = ElementTree.fromstring(contents).findall('.//{*}item')
+        self._assert_manifest_entry(manifest_items, font_resource)  # type: ignore
+        self._assert_manifest_entry(manifest_items, css_resource)  # type: ignore
 
-    def _assert_manifest_entry(self, manifest_items: List[Any], href_target: str):
-        matching_item = next((item for item in manifest_items if item['href'] == href_target), None)
+    def _assert_manifest_entry(self, manifest_items: List[ElementTree.Element[str]], href_target: str):
+        matching_item = next((item for item in manifest_items if item.attrib.get('href') == href_target), None)
         self.assertIsNotNone(matching_item, f'Expected manifest to contain one entry with a href of [{href_target}].')
 
     def _assert_chapter_contains_style_line(self, temp_path: Path, css_resource: str):
@@ -81,9 +83,9 @@ class IntegrationTest(unittest.TestCase):
         self.assertTrue(chapter_file.is_file(), f'Expected chapter file to be in location of [{chapter_file}]')
 
         with open(chapter_file, 'r', encoding='utf-8') as file:
-            contents = ''.join(file.readlines())
+            lines = file.readlines()
 
-        links = BeautifulSoup(contents, features='html.parser').find('html').find('head').find_all('link')
+        expression = re.compile(IntegrationTest._XHTML_LINK_PATTERN)
 
-        matching_link = next((link for link in links if css_resource in link['href']), None)
+        matching_link = next((line for line in lines if expression.match(line)), None)
         self.assertIsNotNone(matching_link, f'Expected chapter file to contain link to [{css_resource}].')

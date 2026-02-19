@@ -1,6 +1,6 @@
 from pathlib import Path
-from bs4 import BeautifulSoup
 from functools import lru_cache
+from xml.etree import ElementTree
 
 from repack.core.errors import (
     OpfException,
@@ -71,12 +71,18 @@ class Opf:
 
     def _find_relative_opf_file_location(self, container_content: str) -> str:
         try:
-            root_file_list = (BeautifulSoup(container_content, features='xml')
-                              .find('container')
-                              .find('rootfiles')
-                              .find_all('rootfile'))
-            opf_location_node = next((root_file for root_file in root_file_list if root_file[_MEDIA_TYPE_PROPERTY] == _OPF_MEDIA_TYPE), None)
-            return opf_location_node[_FULL_PATH_PROPERTY]
+            root_file_list = ElementTree.fromstring(container_content).findall('.//{*}rootfile')
+            if len(root_file_list) == 0:
+                raise Exception('No rootfile nodes found in container file.')
+
+            opf_location_node = next((root_file for root_file in root_file_list if root_file.attrib.get(_MEDIA_TYPE_PROPERTY) == _OPF_MEDIA_TYPE), None)
+            if opf_location_node is None:
+                raise Exception('Could not find rootfile node in container.xml.')
+
+            full_path = opf_location_node.attrib.get(_FULL_PATH_PROPERTY)
+            if full_path is None:
+                raise Exception('The rootfile node was found but it did not specify the path to the OPF file.')
+            return full_path
         except Exception as e:
             raise ParseException(e) from e
 
