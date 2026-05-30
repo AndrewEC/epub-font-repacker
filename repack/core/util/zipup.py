@@ -49,7 +49,7 @@ class ZipUp:
         print(f'\nRepacked epub can be found at: [{repacked_path}]')
 
     def _get_files_to_archive(self, temp_path: Path) -> List[Path]:
-        all_files = []
+        all_files: List[Path] = []
         for root, _, files in os.walk(temp_path):
             for file_name in files:
                 all_files.append(Path(root).joinpath(file_name))

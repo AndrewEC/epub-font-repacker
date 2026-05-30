@@ -1,3 +1,4 @@
+from typing import Any
 from pathlib import Path
 import shutil
 
@@ -21,7 +22,7 @@ class TempDirectory:
     def __enter__(self):
         self._dir_path.mkdir(exist_ok=False, parents=False)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         try:
             if self._dir_path.is_dir():
                 shutil.rmtree(self._dir_path)

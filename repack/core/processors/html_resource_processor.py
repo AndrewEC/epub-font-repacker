@@ -42,7 +42,7 @@ class HtmlResouceProcessor:
         return file_path.is_file() and file_path.suffix in _APPLICABLE_EXTENSIONS
 
     def _list_all_processable_files(self, temp_path: Path) -> List[Path]:
-        processable_files = []
+        processable_files: List[Path] = []
         for root, _, files in os.walk(temp_path):
             for file in files:
                 file_path = Path(root).joinpath(file)
