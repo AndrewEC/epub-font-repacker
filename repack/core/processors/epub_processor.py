@@ -37,7 +37,7 @@ class EpubProcessor:
         self._temp_directory_factory = temp_directory_factory
         self._resource_paths = resource_paths
 
-    def process_epub_file(self, epub_file: str):
+    def process_epub_file(self, epub_file: str, font: str):
         """
         The 'entry point' of the application that orchestrates the flow of extract, updating,
         and repacking the epub file.
@@ -61,7 +61,7 @@ class EpubProcessor:
 
             self._zip_up.unzip_epub_contents_to_temp_dir(epub_path, temp_path)
 
-            font_file_name = self._font_resource_processor.process_font_file(temp_path)
+            font_file_name = self._font_resource_processor.process_font_file(temp_path, font)
             css_file_name = self._css_resouce_processor.process_css_file(temp_path, font_file_name)
             self._html_resource_processor.process_html_files(temp_path, css_file_name)
 

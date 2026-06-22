@@ -21,6 +21,8 @@ from ..util import fully_qualified_name
 
 class EpubProcessorTest(unittest.TestCase):
 
+    _FONT_FILE = 'test-font.ttf'
+
     @patch(fully_qualified_name(ResourcePaths))
     @patch(fully_qualified_name(TempDirectoryFactory))
     @patch(fully_qualified_name(ZipUp))
@@ -70,10 +72,10 @@ class EpubProcessorTest(unittest.TestCase):
         try:
             self._create_test_resource(epub_path)
 
-            epub_processor.process_epub_file(str(epub_path))
+            epub_processor.process_epub_file(str(epub_path), self._FONT_FILE)
 
             mock_zip_up.unzip_epub_contents_to_temp_dir.assert_called_once_with(epub_path, temp_path)
-            mock_font_resource_processor.process_font_file.assert_called_once_with(temp_path)
+            mock_font_resource_processor.process_font_file.assert_called_once_with(temp_path, self._FONT_FILE)
             mock_css_resource_processor.process_css_file.assert_called_once_with(temp_path, font_file_name)
             mock_html_resource_processor.process_html_files.assert_called_once_with(temp_path, css_file_name)
             mock_zip_up.create_epub_zip.assert_called_once_with(epub_path, temp_path)

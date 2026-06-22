@@ -24,7 +24,7 @@ class IntegrationTest(unittest.TestCase):
         repacked_path = test_data_path.joinpath('test_epub - Repacked.epub')
 
         try:
-            EPUB_PROCESSOR_SINGLETON.process_epub_file(str(epub_path))
+            EPUB_PROCESSOR_SINGLETON.process_epub_file(str(epub_path), 'Roboto-Light.ttf')
 
             self._assert_repacked_epub(repacked_path)
         finally:

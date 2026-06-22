@@ -10,6 +10,8 @@ from ..util import fully_qualified_name
 
 class FontResourceProcessorTests(unittest.TestCase):
 
+    _FONT_FILE = 'test-font.ttf'
+
     @patch(fully_qualified_name(ResourceProcessor))
     def test_process_font_file(self, mock_resource_processor: ResourceProcessor):
         processor = FontResourceProcessor(mock_resource_processor)
@@ -19,12 +21,12 @@ class FontResourceProcessorTests(unittest.TestCase):
         expected = 'expected_value'
         mock_resource_processor.register_resource = Mock(return_value=Path(expected))
 
-        actual = processor.process_font_file(temp_path)
+        actual = processor.process_font_file(temp_path, self._FONT_FILE)
 
         self.assertEqual(expected, actual)
 
         mock_resource_processor.register_resource.assert_called_once_with(
             temp_path,
-            'Roboto-Light.ttf',
+            self._FONT_FILE,
             '<item href="{}" id="{}_font" media-type="font/ttf"/>\n'
         )
