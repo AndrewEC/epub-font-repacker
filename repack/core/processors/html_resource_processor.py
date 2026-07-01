@@ -8,7 +8,8 @@ from repack.core.util import read_and_unlink
 
 _APPLICABLE_EXTENSIONS = [
     '.html',
-    '.xhtml'
+    '.xhtml',
+    '.htm'
 ]
 
 
